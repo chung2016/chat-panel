@@ -8,6 +8,8 @@ section {
   background-color: #f0f0f0;
   height: calc(100% - 50px);
   position: relative;
+  overflow-y: scroll;
+  padding: 5px;
 }
 
 .type-message-container {

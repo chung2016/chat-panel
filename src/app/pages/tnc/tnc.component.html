@@ -1,3 +1,18 @@
-<p>tnc works!</p>
-
-<a [routerLink]="[ '/name-form' ]">name form</a>
+<h1>Terms and condition</h1>
+<p>
+  <ng-container *ngFor="let item of dump">
+    {{ item }}
+  </ng-container>
+</p>
+<div>
+  <label for="agree">
+    <input
+      type="checkbox"
+      id="agree"
+      [checked]="agree"
+      (change)="agree = !agree"
+    />
+    <span>i agree</span>
+  </label>
+</div>
+<button (click)="nextPage()" [disabled]="!agree">next page</button>
