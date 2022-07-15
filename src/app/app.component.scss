@@ -1,0 +1,18 @@
+section {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-container {
+  background-color: #f0f0f0;
+  height: calc(100% - 50px);
+  position: relative;
+}
+
+.type-message-container {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  transform: translateY(100%);
+}
