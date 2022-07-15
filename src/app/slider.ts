@@ -20,6 +20,9 @@ function slideTo(direction: 'right' | 'left') {
     query(':enter', [
       style({ [direction]: '-100%'})
     ]),
+    query(':leave', [
+      style({ [direction]: '0%'})
+    ]),
     group([
       query(':leave', [
         animate('600ms ease', style({ [direction]: '100%'}))

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DoBootstrap, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -18,6 +18,7 @@ import { TroubleComponent } from './pages/trouble/trouble.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfirmLeaveChatComponent } from './components/confirm-leave-chat/confirm-leave-chat.component';
+import { createCustomElement } from '@angular/elements';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,18 @@ import { ConfirmLeaveChatComponent } from './components/confirm-leave-chat/confi
     HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  // bootstrap: [AppComponent],
+  entryComponents: [AppComponent],
 })
-export class AppModule {}
+export class AppModule implements DoBootstrap {
+  constructor(private injector: Injector) {
+    // using createCustomElement from angular package it will convert angular component to stander web component
+    const el = createCustomElement(AppComponent, {
+      injector: this.injector,
+    });
+    // using built in the browser to create your own custome element name
+    customElements.define('chat-panel', el);
+  }
+
+  ngDoBootstrap() {}
+}
