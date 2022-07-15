@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatRoomComponent implements OnInit {
 
-  constructor() { }
+  messages: any[] = [];
+
+  constructor(private socketService: SocketService) {
+    this.socketService.recivedMessage.subscribe((msg) => {
+      this.messages.push(msg);
+    });
+  }
 
   ngOnInit(): void {
   }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Officer Chat</title>
     <style>
       body {
         margin: 0;
@@ -56,13 +56,74 @@
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+    <div
+      style="display: flex; justify-content: center; height: calc(100vh - 48px)"
+    >
+      <div style="flex-basis: 200px; background-color: #f3f3f3">
+        <ul id="customers"></ul>
+      </div>
+      <div style="flex-grow: 1">
+        <ul id="messages"></ul>
+      </div>
+    </div>
+    <form id="form">
+      <input id="input" name="message" autocomplete="off" />
+      <button type="submit">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io();
+      let pickuping = null;
+      const socket = io({
+        auth: {
+          name: "officer",
+        },
+      });
+      const formElem = document.querySelector("form");
+      formElem.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!pickuping) {
+          return;
+        }
+        const formData = new FormData(formElem);
+        socket.emit("chat message", {
+          username: "officer",
+          userid: socket.id,
+          content: formData.get("message"),
+          room: pickuping,
+        });
+        formElem.reset();
+        document.getElementById("input").focus();
+      });
+      socket.on("customers", (customers) => {
+        console.log("customers", customers);
+        const customerlist = document.getElementById("customers");
+        customerlist.innerHTML = "";
+        customers.forEach((customer) => {
+          const item = document.createElement("li");
+          const customername = document.createElement("label");
+          customername.id = customer.socketid;
+          customername.textContent = `${customer.username}`;
+          item.appendChild(customername);
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "customers";
+          radio.value = customer.socketid;
+          radio.addEventListener("click", () => {
+            console.log("radio: ", radio.value);
+            socket.emit("pickup", { socketid: customer.socketid });
+            pickuping = customer.socketid;
+            messages.innerHTML = ``;
+          });
+          item.appendChild(radio);
+          customerlist.appendChild(item);
+        });
+      });
+      socket.on("chat message", ({ username, userid, content }) => {
+        const item = document.createElement("li");
+        item.textContent = `${username}: ${content}`;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
     </script>
   </body>
 </html>

@@ -1,9 +1,9 @@
 <section>
   <app-header></app-header>
-  <div class="page-container" [@routeAnimations]="prepareRoute(outlet)" >
+  <div class="page-container" [@routeAnimations]="prepareRoute(outlet)" [ngClass]="{'chat-room': typeMessage}">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
-  <div class="type-message-container">
+  <div class="type-message-container" [ngClass]="{'active': typeMessage}">
     <app-type-message [componentEnabled]="typeMessage"></app-type-message>
   </div>
 </section>
