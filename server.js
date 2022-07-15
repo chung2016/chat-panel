@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   const { name } = socket.handshake.auth;
   if (name !== "officer") {
-    console.log(name);
+    console.log('connection: ', name);
     customers.push({ username: name, socketid: socket.id });
     socket.join(name);
     if (!chatMessages[name]) chatMessages[name] = [];
@@ -31,8 +31,8 @@ io.on("connection", (socket) => {
     io.to(msg.room).emit("chat message", msg);
   });
   socket.on("pickup", (customer) => {
+    console.log('pickup', customer);
     socket.join(customer.name);
-    chatMessages[customer.name] = [];
     io.to(customer.name).emit("pickup");
   });
 
@@ -40,12 +40,13 @@ io.on("connection", (socket) => {
     const endchatmessage = {
       type: "system",
       userid: socket.id,
-      content: 'this chat is ended',
+      content: "this chat is ended",
       room: name,
-    }
+    };
     chatMessages[name].push(endchatmessage);
     io.to(name).emit("chat message", endchatmessage);
-    io.to(name).emit('end chat');
+    io.to(name).emit("end chat");
+    delete chatMessages[name];
   });
 
   socket.on("disconnect", () => {

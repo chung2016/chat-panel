@@ -107,6 +107,7 @@
           customername.id = customer.socketid;
           customername.textContent = `${customer.username}`;
           item.appendChild(customername);
+          pickuping = null;
           const radio = document.createElement("input");
           radio.type = "radio";
           radio.name = "customers";
