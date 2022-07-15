@@ -49,6 +49,7 @@
       }
       #messages > li {
         padding: 0.5rem 1rem;
+        white-space: pre-wrap;
       }
       #messages > li:nth-child(odd) {
         background: #efefef;
@@ -111,6 +112,9 @@
           radio.name = "customers";
           radio.value = customer.socketid;
           radio.addEventListener("click", () => {
+            if (pickuping === customer.socketid) {
+              return;
+            }
             console.log("radio: ", radio.value);
             socket.emit("pickup", { socketid: customer.socketid });
             pickuping = customer.socketid;

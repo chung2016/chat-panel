@@ -1,8 +1,4 @@
 <section>
-  <div>
-    {{ username }}: 
-  </div>
-  <div>
-    {{ content }}
-  </div>
+  <div [textContent]="username + ': '"></div>
+  <div [textContent]="content" class="content-container"></div>
 </section>
