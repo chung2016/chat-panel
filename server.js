@@ -3,6 +3,7 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const { v1: uuidv1 } = require('uuid');
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -20,20 +21,23 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   const { name } = socket.handshake.auth;
   if (name !== "officer") {
-    console.log('connection: ', name);
     customers.push({ username: name, socketid: socket.id });
     socket.join(name);
     if (!chatMessages[name]) chatMessages[name] = [];
+    chatMessages[name].forEach(chatMessage => io.to(name).emit("chat message", chatMessage));
   }
 
   io.emit("customers", customers);
   socket.on("chat message", (msg) => {
+    msg.id = uuidv1();
     io.to(msg.room).emit("chat message", msg);
+    chatMessages[msg.room].push(msg);
   });
   socket.on("pickup", (customer) => {
-    console.log('pickup', customer);
     socket.join(customer.name);
     io.to(customer.name).emit("pickup");
+    if (!chatMessages[customer.name]) chatMessages[customer.name] = [];
+    chatMessages[customer.name].forEach(chatMessage => io.to(customer.name).emit("chat message", chatMessage));
   });
 
   socket.on("close chat", ({ name }) => {
@@ -42,6 +46,7 @@ io.on("connection", (socket) => {
       userid: socket.id,
       content: "this chat is ended",
       room: name,
+      id: uuidv1()
     };
     chatMessages[name].push(endchatmessage);
     io.to(name).emit("chat message", endchatmessage);

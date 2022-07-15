@@ -76,6 +76,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       let pickuping = null;
+      let chatmessages = [];
       const socket = io({
         auth: {
           name: "officer",
@@ -98,7 +99,6 @@
         document.getElementById("input").focus();
       });
       socket.on("customers", (customers) => {
-        console.log("customers", customers);
         const customerlist = document.getElementById("customers");
         customerlist.innerHTML = "";
         customers.forEach((customer) => {
@@ -119,23 +119,27 @@
             console.log("radio: ", radio.value);
             socket.emit("pickup", { name: customer.username });
             pickuping = customer.username;
-            messages.innerHTML = ``;
           });
           item.appendChild(radio);
           customerlist.appendChild(item);
         });
       });
-      socket.on("chat message", ({ username, userid, content }) => {
-        if (pickuping) {
+
+      socket.on("chat message", ({ username, userid, content, id }) => {
+        if (pickuping && !chatmessages.find((m) => m === id)) {
           const item = document.createElement("li");
-          item.textContent = username ? `${username}: ${content}` : `${content}`;
+          item.textContent = username
+            ? `${username}: ${content}`
+            : `${content}`;
           messages.appendChild(item);
           window.scrollTo(0, document.body.scrollHeight);
+          chatmessages.push(id);
         }
       });
-      socket.on('end chat', () => {
+      socket.on("end chat", () => {
         pickuping = null;
-      })
+        chatmessages = [];
+      });
     </script>
   </body>
 </html>
