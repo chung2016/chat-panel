@@ -112,12 +112,12 @@
           radio.name = "customers";
           radio.value = customer.socketid;
           radio.addEventListener("click", () => {
-            if (pickuping === customer.socketid) {
+            if (pickuping === customer.username) {
               return;
             }
             console.log("radio: ", radio.value);
-            socket.emit("pickup", { socketid: customer.socketid });
-            pickuping = customer.socketid;
+            socket.emit("pickup", { name: customer.username });
+            pickuping = customer.username;
             messages.innerHTML = ``;
           });
           item.appendChild(radio);
@@ -125,11 +125,16 @@
         });
       });
       socket.on("chat message", ({ username, userid, content }) => {
-        const item = document.createElement("li");
-        item.textContent = username ? `${username}: ${content}` : `${content}`;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
+        if (pickuping) {
+          const item = document.createElement("li");
+          item.textContent = username ? `${username}: ${content}` : `${content}`;
+          messages.appendChild(item);
+          window.scrollTo(0, document.body.scrollHeight);
+        }
       });
+      socket.on('close chat', () => {
+        pickuping = null;
+      })
     </script>
   </body>
 </html>

@@ -20,7 +20,7 @@ section {
   width: 100%;
   bottom: 0;
   transform: translateY(100%);
-  transition: transform ease-in 0.5ms;
+  transition: transform ease-out 0.3s;
 
   &.active {
     transform: translateY(0);

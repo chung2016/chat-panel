@@ -72,7 +72,7 @@ export class SocketService {
       username: name,
       userid: this.socket.id,
       content,
-      room: this.socket.id,
+      room: name,
     });
   }
 
