@@ -1,4 +1,4 @@
-<section>
-  <textarea [disabled]="!componentEnabled"></textarea>
-  <button [disabled]="!componentEnabled">send</button>
-</section>
+<form [formGroup]="typeMessageForm" (ngSubmit)="send()">
+  <textarea formControlName="content"></textarea>
+  <button type="submit" [disabled]="!componentEnabled">send</button>
+</form>

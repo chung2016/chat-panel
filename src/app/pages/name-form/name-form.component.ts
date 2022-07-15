@@ -18,7 +18,7 @@ export class NameFormComponent implements OnInit {
   ngOnInit(): void {}
 
   previousPage(): void {
-    this.router.navigate(['tnc']);
+    this.router.navigate(['tnc'], { skipLocationChange: true });
   }
 
   nextPage(): void {

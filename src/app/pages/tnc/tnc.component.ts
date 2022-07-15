@@ -1,25 +1,27 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tnc',
   templateUrl: './tnc.component.html',
-  styleUrls: ['./tnc.component.scss']
+  styleUrls: ['./tnc.component.scss'],
 })
 export class TncComponent implements OnInit {
-  agree = false;
+  tncForm = new FormGroup({
+    agree: new FormControl(false),
+  });
 
-  dump = Array(10).fill(`Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum minima
+  dump = Array(1)
+    .fill(`Lorem ipsum dolor, sit amet consectetur adipisicing elit. Earum minima
   facilis, dolores blanditiis inventore atque corrupti tempore asperiores iste
-  quasi, corporis sit? Sapiente facilis obcaecati dolorem ut omnis cum? Sunt.`)
+  quasi, corporis sit? Sapiente facilis obcaecati dolorem ut omnis cum? Sunt.`);
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   nextPage(): void {
-    this.router.navigate(["/name-form"])
+    this.router.navigate(['/name-form'], { skipLocationChange: true });
   }
-
 }

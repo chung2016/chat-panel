@@ -13,6 +13,7 @@ export class SocketService {
   connected = new EventEmitter();
   pickuped = new EventEmitter();
   recivedMessage = new EventEmitter();
+  disconnected = new EventEmitter();
 
   constructor() {}
 
@@ -34,11 +35,12 @@ export class SocketService {
     });
     this.socket.on('connect', () => {
       console.log('connect');
-      this.connected.emit();
+      this.connected.emit({ name });
     });
     this.socket.on('disconnect', (e) => {
       this.socket = null;
       console.log('disconnect', e);
+      this.disconnected.emit();
     });
     this.socket.on('connect_error', (e) => {
       console.log('connect_error', e);
@@ -52,11 +54,21 @@ export class SocketService {
       this.pickuped.emit();
     });
     console.log(this.socket.id);
-    this.socket.on("chat message", (msg) => {
+    this.socket.on('chat message', (msg) => {
       console.log('chat message', msg);
       this.recivedMessage.emit(msg);
     });
   }
 
-  sendMessage() {}
+  sendMessage(content: string, name: string) {
+    if (!!!this.socket) {
+      return;
+    }
+    this.socket.emit('chat message', {
+      username: name,
+      userid: this.socket.id,
+      content,
+      room: this.socket.id,
+    });
+  }
 }

@@ -7,7 +7,6 @@ import { TncComponent } from './pages/tnc/tnc.component';
 import { TroubleComponent } from './pages/trouble/trouble.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/tnc' },
   {
     path: 'tnc',
     component: TncComponent,

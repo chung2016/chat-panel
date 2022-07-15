@@ -17,6 +17,7 @@ import { MembersBarComponent } from './components/members-bar/members-bar.compon
 import { TroubleComponent } from './pages/trouble/trouble.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ConfirmLeaveChatComponent } from './components/confirm-leave-chat/confirm-leave-chat.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     TypeMessageComponent,
     MembersBarComponent,
     TroubleComponent,
+    ConfirmLeaveChatComponent,
   ],
   imports: [
     BrowserModule,
