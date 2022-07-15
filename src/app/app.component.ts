@@ -9,7 +9,7 @@ import { slider } from './slider';
   animations: [slider],
 })
 export class AppComponent {
-  title = 'chat-panel';
+  typeMessage = false;
 
   prepareRoute(outlet: RouterOutlet) {
     return (

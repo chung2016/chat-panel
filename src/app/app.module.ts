@@ -15,6 +15,8 @@ import { CloseButtonComponent } from './components/close-button/close-button.com
 import { TypeMessageComponent } from './components/type-message/type-message.component';
 import { MembersBarComponent } from './components/members-bar/members-bar.component';
 import { TroubleComponent } from './pages/trouble/trouble.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,14 @@ import { TroubleComponent } from './pages/trouble/trouble.component';
     MembersBarComponent,
     TroubleComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
