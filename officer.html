@@ -101,6 +101,7 @@
       socket.on("customers", (customers) => {
         const customerlist = document.getElementById("customers");
         customerlist.innerHTML = "";
+        
         customers.forEach((customer) => {
           const item = document.createElement("li");
           const customername = document.createElement("label");
@@ -116,6 +117,7 @@
             if (pickuping === customer.username) {
               return;
             }
+            messages.innerHTML = ``;
             console.log("radio: ", radio.value);
             socket.emit("pickup", { name: customer.username });
             pickuping = customer.username;
