@@ -11,7 +11,7 @@ const io = new Server(server, {
 
 let customers = [];
 
-let chat = {};
+const chatMessages = {};
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/officer.html");
@@ -22,24 +22,34 @@ io.on("connection", (socket) => {
   if (name !== "officer") {
     customers.push({ username: name, socketid: socket.id });
     socket.join(socket.id);
+    if (!chatMessages[name]) chatMessages[name] = [];
   }
 
   io.emit("customers", customers);
   socket.on("chat message", (msg) => {
-    console.log(`io.to(${msg.userid}).emit("chat message", ${msg});`);
     io.to(msg.room).emit("chat message", msg);
   });
   socket.on("pickup", (customer) => {
-    console.log("pickup", customer);
     socket.join(customer.socketid);
-    chat[customer.socketid] = [];
+    chatMessages[customer.socketid] = [];
     io.to(customer.socketid).emit("pickup", customer);
+  });
+
+  socket.on("close chat", ({ name, socketid }) => {
+    const endchatmessage = {
+      type: "system",
+      userid: socket.id,
+      content: 'this chat is ended',
+      room: socketid,
+    }
+    chatMessages[name].push(endchatmessage);
+    io.to(socketid).emit("chat message", endchatmessage);
+    io.to(socketid).emit('end chat');
   });
 
   socket.on("disconnect", () => {
     customers = customers.filter((customer) => customer.socketid !== socket.id);
     io.emit("customers", customers);
-    console.log("socket disconnect");
   });
 });
 

@@ -14,6 +14,7 @@ export class SocketService {
   pickuped = new EventEmitter();
   recivedMessage = new EventEmitter();
   disconnected = new EventEmitter();
+  endChat = new EventEmitter();
 
   constructor() {}
 
@@ -58,6 +59,9 @@ export class SocketService {
       console.log('chat message', msg);
       this.recivedMessage.emit(msg);
     });
+    this.socket.on('end chat', () => {
+      this.endChat.emit();
+    })
   }
 
   sendMessage(content: string, name: string) {
@@ -69,6 +73,16 @@ export class SocketService {
       userid: this.socket.id,
       content,
       room: this.socket.id,
+    });
+  }
+
+  closeChat(name: string) {
+    if (!!!this.socket) {
+      return;
+    }
+    this.socket?.emit('close chat', {
+      name,
+      socketid: this.socket.id,
     });
   }
 }

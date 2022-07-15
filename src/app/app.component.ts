@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
     });
     this.socketService.disconnected.subscribe(() => {
       sessionStorage.removeItem('name');
+    });
+    this.socketService.endChat.subscribe(() => {
+      this.socketService.disconnect();
     })
   }
 

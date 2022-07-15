@@ -1,4 +1,4 @@
 <section>
-  <div [textContent]="username + ': '"></div>
+  <div [textContent]="username + ': '" *ngIf="username"></div>
   <div [textContent]="content" class="content-container"></div>
 </section>

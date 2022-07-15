@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-close-button',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CloseButtonComponent implements OnInit {
 
-  constructor() { }
+  constructor(private socketService: SocketService) { }
 
   ngOnInit(): void {
   }
 
+  close() {
+    const name = sessionStorage.getItem('name');
+    if (!name) {
+      return;
+    }
+    this.socketService.closeChat(name);
+  }
 }

@@ -126,7 +126,7 @@
       });
       socket.on("chat message", ({ username, userid, content }) => {
         const item = document.createElement("li");
-        item.textContent = `${username}: ${content}`;
+        item.textContent = username ? `${username}: ${content}` : `${content}`;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });
