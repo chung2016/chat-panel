@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-name-form',
@@ -12,7 +13,7 @@ export class NameFormComponent implements OnInit {
     name: new FormControl(''),
   });
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private socketService: SocketService) {}
 
   ngOnInit(): void {}
 
@@ -22,10 +23,9 @@ export class NameFormComponent implements OnInit {
 
   nextPage(): void {
     /**
-     * TODO: call api send name to backend
-     * if api success go to queuing page
-     * otherwise go to troble page
+     * call connect socket and send name to backend
      */
-    console.log(this.nameForm.value);
+    this.nameForm.disable();
+    this.socketService.connect(this.nameForm.value.name);
   }
 }
