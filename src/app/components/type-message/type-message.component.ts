@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -22,12 +23,21 @@ export class TypeMessageComponent implements OnInit, AfterViewInit {
   textareaEle?: ElementRef<HTMLTextAreaElement>;
 
   typeMessageForm = new FormGroup({
-    content: new FormControl({ value: '', disabled: this.componentEnabled }),
+    content: new FormControl({ value: '', disabled: true }),
   });
 
   constructor(private socketService: SocketService) {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    const { componentEnabled } = changes;
+    if (componentEnabled.currentValue) {
+      this.typeMessageForm.enable();
+    } else {
+      this.typeMessageForm.disable();
+    }
+  }
 
   send() {
     const contentControl = this.typeMessageForm.get('content');
