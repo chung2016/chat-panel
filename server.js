@@ -48,7 +48,10 @@ io.on("connection", (socket) => {
     );
   });
 
-  socket.on("close chat", ({ name }) => {
+  socket.on("pickdown", ({ name }) => emitEndChat(name));
+  socket.on("close chat", ({ name }) => emitEndChat(name));
+
+  function emitEndChat(name) {
     const endchatmessage = {
       type: "system",
       userid: socket.id,
@@ -60,7 +63,7 @@ io.on("connection", (socket) => {
     io.to(name).emit("chat message", endchatmessage);
     io.to(name).emit("end chat");
     delete chatMessages[name];
-  });
+  }
 
   socket.on("disconnect", () => {
     customers = customers.filter((customer) => customer.socketid !== socket.id);

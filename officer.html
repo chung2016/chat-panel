@@ -61,7 +61,7 @@
       style="display: flex; justify-content: center; height: calc(100vh - 48px)"
     >
       <div style="flex-basis: 200px; background-color: #f3f3f3">
-        <h1>Customers</h1>
+        <h2 style="text-align: center;">Customers</h2>
         <hr />
         <ul id="customers"></ul>
       </div>
@@ -122,6 +122,15 @@
             socket.emit("pickup", { name: customer.username });
             pickuping = customer.username;
           });
+          const pickdownBtn = document.createElement('button');
+          pickdownBtn.textContent="disconnect";
+          pickdownBtn.addEventListener('click', () => {
+            if (!pickuping) {
+              return;
+            }
+            socket.emit("pickdown", { name: customer.username });
+          });
+          item.appendChild(pickdownBtn);
           item.appendChild(radio);
           customerlist.appendChild(item);
         });
@@ -138,6 +147,8 @@
           chatmessages.push(id);
         }
       });
+
+      socket.
       socket.on("end chat", () => {
         pickuping = null;
         chatmessages = [];
