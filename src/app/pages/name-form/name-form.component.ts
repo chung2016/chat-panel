@@ -26,6 +26,7 @@ export class NameFormComponent implements OnInit {
      * call connect socket and send name to backend
      */
     this.nameForm.disable();
+    localStorage.setItem('name', this.nameForm.value.name);
     this.socketService.connect(this.nameForm.value.name);
   }
 }

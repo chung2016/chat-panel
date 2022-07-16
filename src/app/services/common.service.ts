@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -6,6 +6,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CommonService {
   $chatMessages = new BehaviorSubject<any[]>([]);
+
+  bc = new BroadcastChannel('chat-panel');
+  connectionSync = new EventEmitter();
+  resetSync = new EventEmitter();
 
   onChatMessages() {
     return this.$chatMessages.asObservable();
@@ -17,5 +21,17 @@ export class CommonService {
     }
   }
 
-  constructor() {}
+  resetMessage() {
+    this.$chatMessages.next([]);
+  }
+
+  constructor() {
+    this.bc.onmessage = (event) => {
+      if (event.data.type === 'connection') {
+        this.connectionSync.emit();
+      } else if (event.data.type === 'reset') {
+        this.resetSync.emit();
+      }
+    }
+  }
 }

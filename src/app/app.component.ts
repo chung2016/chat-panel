@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { delay } from 'rxjs';
 import { CommonService } from './services/common.service';
@@ -17,27 +17,50 @@ export class AppComponent implements OnInit {
   constructor(
     private socketService: SocketService,
     private router: Router,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private ngZone: NgZone
   ) {
-    this.socketService.connected.subscribe(({ name }) => {
-      this.router.navigate(['queuing'], { skipLocationChange: true });
-      localStorage.setItem('name', name);
+    this.socketService.connected.subscribe(() => {
+      this.ngZone.run(() => {
+        this.commonService.bc.postMessage({ type: 'connection' });
+        this.router.navigate(['queuing'], { skipLocationChange: true });
+      });
     });
     this.socketService.recivedMessage.subscribe((msg) => {
-      this.router.navigate(['chat-room'], { skipLocationChange: true });
-      this.commonService.pushChatMessage(msg);
-      this.typeMessage = true;
+      this.ngZone.run(() => {
+        this.router.navigate(['chat-room'], { skipLocationChange: true });
+        this.commonService.pushChatMessage(msg);
+        this.typeMessage = true;
+      });
     });
     this.socketService.pickuped.subscribe(() => {
-      this.router.navigate(['chat-room'], { skipLocationChange: true });
-      this.typeMessage = true;
+      this.ngZone.run(() => {
+        this.router.navigate(['chat-room'], { skipLocationChange: true });
+        this.typeMessage = true;
+      });
     });
     this.socketService.disconnected.subscribe(() => {
-      localStorage.removeItem('name');
-      this.typeMessage = false;
+      this.ngZone.run(() => {
+        localStorage.removeItem('name');
+        this.typeMessage = false;
+      });
     });
     this.socketService.endChat.subscribe(() => {
-      this.socketService.disconnect();
+      this.ngZone.run(() => {
+        this.socketService.disconnect();
+        this.typeMessage = false;
+      });
+    });
+    this.commonService.connectionSync.subscribe(() => {
+      const name = localStorage.getItem('name');
+      if (name) this.socketService.connect(name);
+    });
+    this.commonService.resetSync.subscribe(() => {
+      this.ngZone.run(() => {
+        this.commonService.resetMessage();
+        this.router.navigate(['name-form'], { skipLocationChange: true });
+        this.typeMessage = false;
+      });
     });
   }
 
@@ -47,6 +70,7 @@ export class AppComponent implements OnInit {
       this.socketService.connect(sessionName);
     } else {
       this.router.navigate(['name-form'], { skipLocationChange: true });
+      this.commonService.bc.postMessage({ type: 'reset' });
     }
   }
 
