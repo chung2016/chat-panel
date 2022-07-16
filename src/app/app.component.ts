@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   ) {
     this.socketService.connected.subscribe(({ name }) => {
       this.router.navigate(['queuing'], { skipLocationChange: true });
-      sessionStorage.setItem('name', name);
+      localStorage.setItem('name', name);
     });
     this.socketService.recivedMessage.subscribe((msg) => {
       this.router.navigate(['chat-room'], { skipLocationChange: true });
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
       this.typeMessage = true;
     });
     this.socketService.disconnected.subscribe(() => {
-      sessionStorage.removeItem('name');
+      localStorage.removeItem('name');
       this.typeMessage = false;
     });
     this.socketService.endChat.subscribe(() => {
@@ -42,11 +42,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const sessionName = sessionStorage.getItem('name');
+    const sessionName = localStorage.getItem('name');
     if (sessionName) {
       this.socketService.connect(sessionName);
     } else {
-      this.router.navigate(['tnc'], { skipLocationChange: true });
+      this.router.navigate(['name-form'], { skipLocationChange: true });
     }
   }
 

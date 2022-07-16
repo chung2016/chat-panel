@@ -14,7 +14,7 @@ export class CloseButtonComponent implements OnInit {
   }
 
   close() {
-    const name = sessionStorage.getItem('name');
+    const name = localStorage.getItem('name');
     if (!name) {
       return;
     }

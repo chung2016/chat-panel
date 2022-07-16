@@ -32,7 +32,7 @@ export class TypeMessageComponent implements OnInit, AfterViewInit {
   send() {
     const contentControl = this.typeMessageForm.get('content');
     const content = contentControl?.value;
-    const name = sessionStorage.getItem('name');
+    const name = localStorage.getItem('name');
     if (!content || !name) {
       return;
     }
