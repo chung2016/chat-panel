@@ -61,7 +61,7 @@
       style="display: flex; justify-content: center; height: calc(100vh - 48px)"
     >
       <div style="flex-basis: 200px; background-color: #f3f3f3">
-        <h2 style="text-align: center;">Customers</h2>
+        <h2 style="text-align: center">Customers</h2>
         <hr />
         <ul id="customers"></ul>
       </div>
@@ -73,11 +73,16 @@
       <input id="input" name="message" autocomplete="off" />
       <button type="submit">Send</button>
     </form>
-    <script src="/socket.io/socket.io.js"></script>
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
     <script>
       let pickuping = null;
       let chatmessages = [];
       const socket = io({
+        path: "/chat-panel/",
         auth: {
           name: "officer",
         },
@@ -89,6 +94,9 @@
           return;
         }
         const formData = new FormData(formElem);
+        if (!formData.get("message")) {
+          return;
+        }
         socket.emit("chat message", {
           username: "officer",
           userid: socket.id,
@@ -101,7 +109,7 @@
       socket.on("customers", (customers) => {
         const customerlist = document.getElementById("customers");
         customerlist.innerHTML = "";
-        
+
         customers.forEach((customer) => {
           const item = document.createElement("li");
           const customername = document.createElement("label");
@@ -121,9 +129,9 @@
             socket.emit("pickup", { name: customer.username });
             pickuping = customer.username;
           });
-          const pickdownBtn = document.createElement('button');
-          pickdownBtn.textContent="disconnect";
-          pickdownBtn.addEventListener('click', () => {
+          const pickdownBtn = document.createElement("button");
+          pickdownBtn.textContent = "disconnect";
+          pickdownBtn.addEventListener("click", () => {
             if (!pickuping) {
               return;
             }

@@ -30,6 +30,7 @@ export class SocketService {
       return;
     }
     this.socket = io(environment.serverUrl, {
+      path: '/chat-panel/',
       auth: { name },
       reconnectionAttempts: this.reconnectionAttempts,
       reconnectionDelay: 500,
@@ -59,7 +60,7 @@ export class SocketService {
     });
     this.socket.on('end chat', () => {
       this.endChat.emit();
-    })
+    });
   }
 
   sendMessage(content: string, name: string) {

@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { v1: uuidv1 } = require("uuid");
 const io = new Server(server, {
+  path: '/chat-panel/',
   cors: {
     origin: "*",
   },
@@ -14,9 +15,11 @@ let customers = [];
 
 const chatMessages = {};
 
-app.get("/", (req, res) => {
+app.get("/officer", (req, res) => {
   res.sendFile(__dirname + "/officer.html");
 });
+
+app.use(express.static(`${__dirname}/dist`));
 
 io.on("connection", (socket) => {
   const { name } = socket.handshake.auth;
