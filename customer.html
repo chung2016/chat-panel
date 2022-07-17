@@ -57,14 +57,12 @@
       <iframe src="/" style="height: 100%"></iframe>
     </div>
     <script>
-      const iFrame = document.querySelector("iframe");
       const chatPanelContainer = document.getElementById(
         "chat-panel-container"
       );
       const activateChatPanelFab = document.getElementById(
         "activate-chat-panel-fab"
       );
-      const chatPanelElement = document.querySelector("chat-panel");
       activateChatPanelFab.addEventListener("click", () => {
         chatPanelContainer.classList.toggle("active");
       });
