@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { v1: uuidv1 } = require("uuid");
 const io = new Server(server, {
-  path: '/chat-panel/',
+  path: "/chat-panel/",
   cors: {
     origin: "*",
   },
@@ -74,6 +74,8 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+const port =
+  process.env.NODE_ENV === "production" ? process.env.PORT || 80 : 4000;
+server.listen(port, () => {
+  console.log(`listening on *:${port}`);
 });
