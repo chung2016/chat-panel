@@ -75,7 +75,7 @@ io.on("connection", (socket) => {
 });
 
 const port =
-  process.env.NODE_ENV === "production" ? process.env.PORT || 80 : 4000;
+  process.env.NODE_ENV === "production" ? process.env.PORT || 80 : 3000;
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
