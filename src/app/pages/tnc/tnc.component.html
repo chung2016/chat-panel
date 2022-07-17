@@ -1,1 +1,19 @@
-<p>tnc works!</p>
+<form (ngSubmit)="nextPage()" [formGroup]="tncForm">
+  <h1>Terms and condition</h1>
+  <p>
+    <ng-container *ngFor="let item of dump">
+      {{ item }}
+    </ng-container>
+  </p>
+  <div>
+    <label for="agree">
+      <input
+        type="checkbox"
+        id="agree"
+        formControlName="agree"
+      />
+      <span>i agree</span>
+    </label>
+  </div>
+  <button type="submit" [disabled]="!tncForm.get('agree')?.value">next page</button>
+</form>

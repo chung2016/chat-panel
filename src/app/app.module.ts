@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { DoBootstrap, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,11 @@ import { CloseButtonComponent } from './components/close-button/close-button.com
 import { TypeMessageComponent } from './components/type-message/type-message.component';
 import { MembersBarComponent } from './components/members-bar/members-bar.component';
 import { TroubleComponent } from './pages/trouble/trouble.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfirmLeaveChatComponent } from './components/confirm-leave-chat/confirm-leave-chat.component';
+import { createCustomElement } from '@angular/elements';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -28,13 +34,31 @@ import { TroubleComponent } from './pages/trouble/trouble.component';
     CloseButtonComponent,
     TypeMessageComponent,
     MembersBarComponent,
-    TroubleComponent
+    TroubleComponent,
+    ConfirmLeaveChatComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FontAwesomeModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  // bootstrap: [AppComponent],
+  entryComponents: [AppComponent],
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap {
+  constructor(private injector: Injector) {
+    // using createCustomElement from angular package it will convert angular component to stander web component
+    const el = createCustomElement(AppComponent, {
+      injector: this.injector,
+    });
+    // using built in the browser to create your own custome element name
+    customElements.define('chat-panel', el);
+  }
+
+  ngDoBootstrap() {}
+}

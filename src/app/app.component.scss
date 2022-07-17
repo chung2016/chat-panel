@@ -1,0 +1,27 @@
+section {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-container {
+  background-color: #f0f0f0;
+  height: calc(100% - 50px);
+  position: relative;
+  overflow-x: hidden;
+  &.chat-room {
+    height: calc(100% - 100px);
+  }
+}
+
+.type-message-container {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  transform: translateY(100%);
+  transition: transform ease-out 0.3s;
+
+  &.active {
+    transform: translateY(0);
+  }
+}

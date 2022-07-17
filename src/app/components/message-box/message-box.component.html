@@ -1,1 +1,4 @@
-<p>message-box works!</p>
+<section>
+  <div [textContent]="username + ': '" *ngIf="username"></div>
+  <div [textContent]="content" class="content-container"></div>
+</section>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Officer Chat</title>
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      #input:focus {
+        outline: none;
+      }
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #messages > li {
+        padding: 0.5rem 1rem;
+        white-space: pre-wrap;
+      }
+      #messages > li:nth-child(odd) {
+        background: #efefef;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="display: flex; justify-content: center; height: calc(100vh - 48px)"
+    >
+      <div style="flex-basis: 200px; background-color: #f3f3f3">
+        <h2 style="text-align: center">Customers</h2>
+        <hr />
+        <ul id="customers"></ul>
+      </div>
+      <div style="flex-grow: 1">
+        <ul id="messages"></ul>
+      </div>
+    </div>
+    <form id="form">
+      <input id="input" name="message" autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let pickuping = null;
+      let chatmessages = [];
+      const socket = io({
+        path: "/chat-panel/",
+        auth: {
+          name: "officer",
+        },
+      });
+      const formElem = document.querySelector("form");
+      formElem.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!pickuping) {
+          return;
+        }
+        const formData = new FormData(formElem);
+        if (!formData.get("message")) {
+          return;
+        }
+        socket.emit("chat message", {
+          username: "officer",
+          userid: socket.id,
+          content: formData.get("message"),
+          room: pickuping,
+        });
+        formElem.reset();
+        document.getElementById("input").focus();
+      });
+      socket.on("customers", (customers) => {
+        const customerlist = document.getElementById("customers");
+        customerlist.innerHTML = "";
+
+        customers.forEach((customer) => {
+          const item = document.createElement("li");
+          const customername = document.createElement("label");
+          customername.id = customer.socketid;
+          customername.textContent = `${customer.username}`;
+          item.appendChild(customername);
+          pickuping = null;
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "customers";
+          radio.value = customer.socketid;
+          radio.addEventListener("click", () => {
+            if (pickuping === customer.username) {
+              return;
+            }
+            messages.innerHTML = ``;
+            socket.emit("pickup", { name: customer.username });
+            pickuping = customer.username;
+          });
+          const pickdownBtn = document.createElement("button");
+          pickdownBtn.textContent = "disconnect";
+          pickdownBtn.addEventListener("click", () => {
+            if (!pickuping) {
+              return;
+            }
+            socket.emit("pickdown", { name: customer.username });
+          });
+          item.appendChild(pickdownBtn);
+          item.appendChild(radio);
+          customerlist.appendChild(item);
+        });
+      });
+
+      socket.on("chat message", ({ username, userid, content, id }) => {
+        if (pickuping && !chatmessages.find((m) => m === id)) {
+          const item = document.createElement("li");
+          item.textContent = username
+            ? `${username}: ${content}`
+            : `${content}`;
+          messages.appendChild(item);
+          window.scrollTo(0, document.body.scrollHeight);
+          chatmessages.push(id);
+        }
+      });
+
+      socket.on("end chat", () => {
+        pickuping = null;
+        chatmessages = [];
+      });
+    </script>
+  </body>
+</html>

@@ -1,1 +1,4 @@
-<p>type-message works!</p>
+<form [formGroup]="typeMessageForm" (ngSubmit)="send()">
+  <textarea formControlName="content" #textarea></textarea>
+  <button type="submit" [disabled]="!componentEnabled||!typeMessageForm.get('content')?.value">send</button>
+</form>

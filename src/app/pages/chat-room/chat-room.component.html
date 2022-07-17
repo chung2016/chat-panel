@@ -1,1 +1,9 @@
-<p>chat-room works!</p>
+<ul>
+  <li>
+    <app-message-box
+      *ngFor="let message of messages"
+      [content]="message.content"
+      [username]="message.username"
+    ></app-message-box>
+  </li>
+</ul>
