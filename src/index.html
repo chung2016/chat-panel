@@ -5,16 +5,79 @@
     <title>ChatPanel</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.1.1/css/all.css"
+      rel="stylesheet"
+    />
     <style>
       body {
         margin: 0;
         height: 100vh;
       }
+      #chat-panel-container {
+        width: 300px;
+        height: 500px;
+        position: fixed;
+        bottom: 0px;
+        right: 50px;
+        transform: translateY(100%);
+        transition: transform ease-out 0.3s;
+      }
+      #chat-panel-container.active {
+        transform: translateY(0);
+      }
+      #activate-chat-panel-fab {
+        width: 50px;
+        height: 50px;
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        border-radius: 50%;
+      }
+      #activate-chat-panel-fab::before {
+        content: "";
+      }
+      #activate-chat-panel-fab.active::before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        background: green;
+        top: -5px;
+        left: -5px;
+        border-radius: 50%;
+      }
     </style>
+
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <!-- <app-root></app-root> -->
-    <chat-panel></chat-panel>
+    <button id="activate-chat-panel-fab">
+      <i class="fa-solid fa-comment"></i>
+    </button>
+    <div id="chat-panel-container">
+      <chat-panel></chat-panel>
+    </div>
+    <script>
+      const chatPanelContainer = document.getElementById(
+        "chat-panel-container"
+      );
+      const activateChatPanelFab = document.getElementById(
+        "activate-chat-panel-fab"
+      );
+      const chatPanelElement = document.querySelector("chat-panel");
+      activateChatPanelFab.addEventListener("click", () => {
+        chatPanelContainer.classList.toggle("active");
+      });
+      chatPanelElement.addEventListener("minimize", () => {
+        chatPanelContainer.classList.toggle("active");
+      });
+      chatPanelElement.addEventListener("active-chat", () => {
+        activateChatPanelFab.classList.add('active');
+      });
+      chatPanelElement.addEventListener("in-active-chat", () => {
+        activateChatPanelFab.classList.remove('active');
+      });
+    </script>
   </body>
 </html>

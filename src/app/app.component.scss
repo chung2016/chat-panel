@@ -9,7 +9,6 @@ section {
   height: calc(100% - 50px);
   position: relative;
   overflow-x: hidden;
-  overflow-y: scroll;
   &.chat-room {
     height: calc(100% - 100px);
   }

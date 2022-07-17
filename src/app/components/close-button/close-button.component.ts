@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { SocketService } from 'src/app/services/socket.service';
 
@@ -9,12 +9,14 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class CloseButtonComponent implements OnInit {
   faXmark = faXmark;
+  @Output() close = new EventEmitter();
   
   constructor(private socketService: SocketService) {}
 
   ngOnInit(): void {}
 
-  close() {
+  handleClick() {
+    this.close.emit();
     const name = localStorage.getItem('name');
     if (!name) {
       return;

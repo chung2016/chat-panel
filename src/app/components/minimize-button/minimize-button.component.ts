@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -7,6 +7,8 @@ import { faWindowMinimize } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./minimize-button.component.scss']
 })
 export class MinimizeButtonComponent implements OnInit {
+
+  @Output() minimize = new EventEmitter();
 
   faWindowMinimize = faWindowMinimize
 

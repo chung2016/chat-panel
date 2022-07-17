@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -7,6 +7,9 @@ import { faComments } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
+  @Output() minimize = new EventEmitter();
+  @Output() close = new EventEmitter();
 
   faComments = faComments
 

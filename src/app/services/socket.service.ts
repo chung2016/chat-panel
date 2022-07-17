@@ -51,10 +51,8 @@ export class SocketService {
       }
     });
     this.socket.on('pickup', (e) => {
-      console.log('pickup', e);
       this.pickuped.emit();
     });
-    console.log(this.socket.id);
     this.socket.on('chat message', (msg) => {
       console.log('chat message', msg);
       this.recivedMessage.emit(msg);

@@ -1,6 +1,5 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { delay } from 'rxjs';
 import { CommonService } from './services/common.service';
 import { SocketService } from './services/socket.service';
 import { slider } from './slider';
@@ -12,6 +11,10 @@ import { slider } from './slider';
   animations: [slider],
 })
 export class AppComponent implements OnInit {
+  @Output('minimize') minimize = new EventEmitter();
+  @Output('active-chat') activeChat = new EventEmitter();
+  @Output('in-active-chat') inActiveChat = new EventEmitter();
+
   typeMessage = false;
 
   constructor(
@@ -31,6 +34,7 @@ export class AppComponent implements OnInit {
         this.router.navigate(['chat-room'], { skipLocationChange: true });
         this.commonService.pushChatMessage(msg);
         this.typeMessage = true;
+        this.activeChat.emit();
       });
     });
     this.socketService.pickuped.subscribe(() => {
@@ -49,6 +53,7 @@ export class AppComponent implements OnInit {
       this.ngZone.run(() => {
         this.socketService.disconnect();
         this.typeMessage = false;
+        this.inActiveChat.emit();
       });
     });
     this.commonService.connectionSync.subscribe(() => {
@@ -80,5 +85,19 @@ export class AppComponent implements OnInit {
       outlet.activatedRouteData &&
       outlet.activatedRouteData['animation']
     );
+  }
+
+  handleMinimize() {
+    this.minimize.emit();
+  }
+
+  handleClose() {
+    this.ngZone.run(() => {
+      const name = localStorage.getItem('name');
+      if (!name) {
+        this.minimize.emit();
+        this.commonService.resetSync.emit();
+      }
+    });
   }
 }

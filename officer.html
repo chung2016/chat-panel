@@ -118,7 +118,6 @@
               return;
             }
             messages.innerHTML = ``;
-            console.log("radio: ", radio.value);
             socket.emit("pickup", { name: customer.username });
             pickuping = customer.username;
           });
@@ -148,7 +147,6 @@
         }
       });
 
-      socket.
       socket.on("end chat", () => {
         pickuping = null;
         chatmessages = [];
