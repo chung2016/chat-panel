@@ -18,6 +18,9 @@ const chatMessages = {};
 app.get("/officer", (req, res) => {
   res.sendFile(__dirname + "/officer.html");
 });
+app.get("/customer", (req, res) => {
+  res.sendFile(__dirname + "/customer.html");
+});
 
 app.use(express.static(`${__dirname}/dist`));
 
