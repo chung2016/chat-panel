@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SocketService {
+  private serverUrl = '';
   socket: Socket | null = null;
 
   attempts = 0;
@@ -18,6 +19,10 @@ export class SocketService {
 
   constructor() {}
 
+  setServerUrl(serverUrl: string) {
+    this.serverUrl = serverUrl;
+  }
+
   disconnect() {
     if (!this.socket) {
       return;
@@ -29,7 +34,7 @@ export class SocketService {
     if (this.socket) {
       return;
     }
-    this.socket = io(environment.serverUrl, {
+    this.socket = io(this.serverUrl, {
       path: '/chat-panel/',
       auth: { name },
       reconnectionAttempts: this.reconnectionAttempts,

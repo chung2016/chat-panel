@@ -1,5 +1,13 @@
-import { Component, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { CommonService } from './services/common.service';
 import { SocketService } from './services/socket.service';
 import { slider } from './slider';
@@ -11,6 +19,7 @@ import { slider } from './slider';
   animations: [slider],
 })
 export class AppComponent implements OnInit {
+  @Input('chat-server-url') chatServerUrl = environment.serverUrl;
   @Output('minimize') minimize = new EventEmitter();
   @Output('active-chat') activeChat = new EventEmitter();
   @Output('in-active-chat') inActiveChat = new EventEmitter();
@@ -22,7 +31,14 @@ export class AppComponent implements OnInit {
     private router: Router,
     private commonService: CommonService,
     private ngZone: NgZone
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    console.log('this.chatServerUrl: ', this.chatServerUrl);
+    if (this.chatServerUrl) {
+      this.socketService.setServerUrl(this.chatServerUrl);
+    }
+
     this.socketService.connected.subscribe(() => {
       this.ngZone.run(() => {
         this.commonService.bc.postMessage({ type: 'connection' });
@@ -67,9 +83,7 @@ export class AppComponent implements OnInit {
         this.typeMessage = false;
       });
     });
-  }
 
-  ngOnInit(): void {
     const sessionName = localStorage.getItem('name');
     if (sessionName) {
       this.socketService.connect(sessionName);
