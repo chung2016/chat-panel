@@ -14,7 +14,7 @@
       const hasAndroidPostMessage =
         window.Android &&
         window.Android.postMessage &&
-        typeofwindow.Android.postMessage === "function";
+        typeof window.Android.postMessage === "function";
 
       const chatPanelElement = document.querySelector("chat-panel");
       chatPanelElement.addEventListener("minimize", () => {
