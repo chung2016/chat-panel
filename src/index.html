@@ -11,6 +11,7 @@
   <body>
     <chat-panel style="display: block; height: 100vh"></chat-panel>
     <script>
+      console.log(window.Android);
       const chatPanelElement = document.querySelector("chat-panel");
       chatPanelElement.addEventListener("minimize", () => {
         window.parent.postMessage("minimize", "*");
