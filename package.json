@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:elements": "node build-elements.js",
-    "postinstall": "npm run build && npm run build:elements"
+    "postbuild": "npm run build:elements",
+    "postinstall": "npm run build"
   },
   "private": true,
   "dependencies": {
