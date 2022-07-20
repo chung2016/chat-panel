@@ -1,8 +1,25 @@
 <form [formGroup]="nameForm" (ngSubmit)="nextPage()">
   <h1>input put your name let me know who you are</h1>
   <input type="text" formControlName="name">
+  <ul *ngIf="nameForm.controls['name'].errors">
+    <li *ngIf="nameForm.controls['name'].errors['required']">
+      please enter name
+    </li>
+    <li *ngIf="nameForm.controls['name'].errors['maxlength']">
+      name max length 8
+    </li>
+    <li *ngIf="nameForm.controls['name'].errors['minlength']">
+      name min length 2
+    </li>
+    <li *ngIf="nameForm.controls['name'].errors['notAllow']">
+      name is not allow
+    </li>
+    <li *ngIf="nameForm.controls['name'].errors['pattern']">
+      only allow english char or number
+    </li>
+  </ul>
   <div class="btn-group">
     <!-- <button type="button" (click)="previousPage()" [disabled]="nameForm.disabled">back to tnc</button> -->
-    <button type="submit" [disabled]="!!!nameForm.get('name')?.value || nameForm.disabled">next page</button>
+    <button type="submit" [disabled]="nameForm.disabled || nameForm.get('name')?.errors">next page</button>
   </div>
 </form>
