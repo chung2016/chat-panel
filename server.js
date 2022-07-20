@@ -15,12 +15,9 @@ let customers = [];
 
 const chatMessages = {};
 
-app.get("/officer", (req, res) => {
-  res.sendFile(__dirname + "/officer.html");
-});
-app.get("/customer", (req, res) => {
-  res.sendFile(__dirname + "/customer.html");
-});
+["officer", "customer"].forEach((v) =>
+  app.get(`/${v}`, (req, res) => res.sendFile(`${__dirname}/${v}.html`))
+);
 
 app.use(express.static(`${__dirname}/dist`));
 
@@ -54,8 +51,9 @@ io.on("connection", (socket) => {
     );
   });
 
-  socket.on("pickdown", ({ name }) => emitEndChat(name));
-  socket.on("close chat", ({ name }) => emitEndChat(name));
+  ["pickdown", "close chat"].forEach((v) =>
+    socket.on(v, ({ name }) => emitEndChat(name))
+  );
 
   function emitEndChat(name) {
     const endchatmessage = {
