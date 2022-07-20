@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
       room: name,
       id: uuidv1(),
     };
-    chatMessages[name].push(endchatmessage);
+    chatMessages[name]?.push(endchatmessage);
     io.to(name).emit("chat message", endchatmessage);
     io.to(name).emit("end chat");
     delete chatMessages[name];
