@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
-import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -8,11 +7,9 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./chat-room.component.scss'],
 })
 export class ChatRoomComponent implements OnInit {
-  messages: any[] = [];
+  messages$ = this.commonService.onChatMessages();
 
-  constructor(private commonService: CommonService) {
-    this.commonService.onChatMessages().subscribe((msg) => (this.messages = msg));
-  }
+  constructor(private commonService: CommonService) {}
 
   ngOnInit(): void {}
 }

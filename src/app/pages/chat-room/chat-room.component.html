@@ -1,7 +1,6 @@
-<ul>
-  <li>
+<ul *ngIf="messages$ | async as messages">
+  <li *ngFor="let message of messages">
     <app-message-box
-      *ngFor="let message of messages"
       [content]="message.content"
       [username]="message.username"
     ></app-message-box>
