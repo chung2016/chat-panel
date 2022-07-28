@@ -1,4 +1,6 @@
 <form [formGroup]="typeMessageForm" (ngSubmit)="send()">
   <textarea formControlName="content" #textarea></textarea>
-  <button type="submit" [disabled]="!componentEnabled||!typeMessageForm.get('content')?.value">send</button>
+  <button type="submit" [disabled]="!componentEnabled||!typeMessageForm.get('content')?.value">
+    <fa-icon [icon]="faPaper"></fa-icon>
+  </button>
 </form>

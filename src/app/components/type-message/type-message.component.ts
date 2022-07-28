@@ -10,6 +10,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { SocketService } from 'src/app/services/socket.service';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-type-message',
@@ -18,6 +19,8 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class TypeMessageComponent implements OnInit, AfterViewInit {
   @Input() componentEnabled = false;
+
+  faPaper = faPaperPlane
 
   @ViewChild('textarea', { static: false })
   textareaEle?: ElementRef<HTMLTextAreaElement>;

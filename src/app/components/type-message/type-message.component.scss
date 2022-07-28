@@ -10,12 +10,20 @@ form {
 button {
   width: 40px;
   height: 40px;
-  border: 1px solid #000;
   text-align: center;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  &:hover {
+    background: #f0f0f0;
+  }
+  &:disabled {
+    cursor: no-drop;
+  }
 }
 
 textarea {
   resize: none;
   border: 1px solid #000;
-  width: 70%;
+  width: 100%;
 }
