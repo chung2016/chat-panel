@@ -8,8 +8,11 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class ChatRoomComponent implements OnInit {
   messages$ = this.commonService.onChatMessages();
+  myName = '';
 
   constructor(private commonService: CommonService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.myName = localStorage.getItem('name') || '';
+  }
 }

@@ -3,6 +3,7 @@
     <app-message-box
       [content]="message.content"
       [username]="message.username"
+      [self]="message.username === myName"
     ></app-message-box>
   </li>
 </ul>

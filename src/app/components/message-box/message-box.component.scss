@@ -1,8 +1,58 @@
+$self_color: lightblue;
+$other_color: lightcoral;
+
+$arrow_size: 7px;
+
+:host {
+  display: block;
+}
+
 section {
   display: flex;
   gap: 5px;
-}
-
-.content-container {
+  position: relative;
   white-space: pre-wrap;
+  .sender-name {
+    color: #f0f0f0;
+  }
+  &.self {
+    justify-content: end;
+    margin-right: 1rem;
+    .container {
+      background-color: $self_color;
+      border-bottom-right-radius: 0;
+      &::before {
+        border-width: $arrow_size 0 0 $arrow_size;
+        border-color: transparent transparent transparent $self_color;
+        right: 0;
+        margin-right: -$arrow_size;
+      }
+    }
+  }
+  &.other {
+    justify-content: start;
+    margin-left: 1rem;
+    .container {
+      background-color: $other_color;
+      border-bottom-left-radius: 0;
+      &::before {
+        border-width: 0 0 $arrow_size $arrow_size;
+        border-color: transparent transparent $other_color transparent;
+        left: 0;
+        margin-left: -$arrow_size;
+      }
+    }
+  }
+  .container {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    &:before {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      content: "";
+      bottom: 0;
+    }
+  }
 }

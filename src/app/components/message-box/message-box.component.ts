@@ -9,6 +9,7 @@ export class MessageBoxComponent implements OnInit {
 
   @Input() username: string = '';
   @Input() content: string = '';
+  @Input() self = false;
 
   constructor() { }
 

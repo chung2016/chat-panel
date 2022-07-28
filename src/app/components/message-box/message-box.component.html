@@ -1,4 +1,6 @@
-<section>
-  <div [textContent]="username + ': '" *ngIf="username"></div>
-  <div [textContent]="content" class="content-container"></div>
+<section [ngClass]="{ self, other: !self }">
+  <div class="container">
+    <div [textContent]="username" *ngIf="!self" class="sender-name"></div>
+    <div [textContent]="content" class="content-container"></div>
+  </div>
 </section>
