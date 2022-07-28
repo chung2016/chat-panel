@@ -1,5 +1,5 @@
 <form [formGroup]="nameForm" (ngSubmit)="nextPage()">
-  <h1>input put your name let me know who you are</h1>
+  <h3>input put your name let me know who you are</h3>
   <input type="text" formControlName="name">
   <ul *ngIf="nameForm.controls['name'].errors">
     <li *ngIf="nameForm.controls['name'].errors['required']">
