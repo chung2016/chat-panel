@@ -5,3 +5,8 @@ ul {
 li + li {
   margin-top: 1rem;
 }
+
+section {
+  overflow-y: scroll;
+  height: 100%;
+}

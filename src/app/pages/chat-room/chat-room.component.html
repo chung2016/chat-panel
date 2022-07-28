@@ -1,9 +1,11 @@
-<ul *ngIf="messages$ | async as messages">
-  <li *ngFor="let message of messages">
-    <app-message-box
-      [content]="message.content"
-      [username]="message.username"
-      [self]="message.username === myName"
-    ></app-message-box>
-  </li>
-</ul>
+<section #container>
+  <ul *ngIf="messages$ | async as messages">
+    <li *ngFor="let message of messages">
+      <app-message-box
+        [content]="message.content"
+        [username]="message.username"
+        [self]="message.username === myName"
+      ></app-message-box>
+    </li>
+  </ul>
+</section>

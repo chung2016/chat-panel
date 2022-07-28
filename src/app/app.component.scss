@@ -15,6 +15,7 @@ section {
   position: relative;
   overflow-x: hidden;
   &.chat-room {
+    overflow: hidden;
     height: calc(100% - 100px);
   }
 }
