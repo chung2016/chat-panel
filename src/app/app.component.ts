@@ -5,6 +5,7 @@ import {
   NgZone,
   OnInit,
   Output,
+  ViewEncapsulation,
 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -17,6 +18,7 @@ import { slider } from './slider';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [slider],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class AppComponent implements OnInit {
   @Input('chat-server-url') chatServerUrl = environment.serverUrl;
